@@ -35,3 +35,18 @@ my @sample_array = qw(Apple Banana Orange Grape STF_Test);
 
 # サブルーチン呼び出し
 check_array_reference(\@sample_array);
+
+
+
+
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+# 配列AとBを定義
+my @arrayA = (1, 2, 3, 4, 5);
+my @arrayB = (3, 4, 5, 6, 7);
+
+# 配列Aから配列Bに含まれない要素を抽出し、それを出力
+my @not_in_arrayB = grep { my $element = $_; not grep { $_ == $element } @arrayB } @arrayA;
+print join("\n", @not_in_arrayB) . "\n";
