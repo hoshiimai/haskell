@@ -3,3 +3,7 @@ my %my_hash;
 
 
 system('bash', '-c', 'diff <(sort abc.csv) <(sort def.csv)');
+
+
+
+map { $_ . (any { $_ == $_ } @ddd ? ' exists' : ' does not exist') } @abc
