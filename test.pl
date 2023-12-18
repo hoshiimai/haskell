@@ -93,3 +93,40 @@ $ sed "s/\"\(.*\),\(.*\)\"/\"\1\2\"/g" tmp
 1,2,3,"abcefg",5
 1,2,3,"abcefg",5
 1,2,3,"abcefg",5
+
+
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $qw  = '"'; # 引用符を定義
+my $dlm = ","; # 区切り文字を定義
+
+open(RH, "<", "from.csv");
+open(WH, ">", "to.csv");
+while(<RH>){
+  print WH RemoveDelimiterInQuotes($_, $qw, $dlm);
+}
+close(WH);
+close(RH);
+
+exit;
+
+sub RemoveDelimiterInQuotes {
+  my $str = shift; # 対象文字列
+  my $qw  = shift; # 引用符
+  my $dlm = shift; # 区切り文字
+  
+  my @substrs = ( $str =~ /$qw[^$qw]*$qw/g);
+  
+  for my $substr (@substrs){
+    my $target = $substr;
+    $substr =~ s/$dlm//g;
+   
+    $str =~ s/\Q$target\E/$substr/;
+  }
+  
+  return $str;
+}
