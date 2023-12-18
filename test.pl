@@ -50,3 +50,34 @@ my @arrayB = (3, 4, 5, 6, 7);
 # 配列Aから配列Bに含まれない要素を抽出し、それを出力
 my @not_in_arrayB = grep { my $element = $_; not grep { $_ == $element } @arrayB } @arrayA;
 print join("\n", @not_in_arrayB) . "\n";
+
+
+
+
+
+use strict;
+use warnings;
+use Text::CSV;
+
+my $input_file = 'aaa.csv';
+my $output_file = 'edited_aaa.csv';
+
+open my $fh_in, '<:encoding(utf8)', $input_file or die "Could not open $input_file: $!";
+open my $fh_out, '>:encoding(utf8)', $output_file or die "Could not open $output_file: $!";
+
+my $csv = Text::CSV->new({
+    binary => 1,
+    allow_whitespace => 1,
+    allow_loose_quotes => 1,
+});
+
+while (my $row = $csv->getline($fh_in)) {
+    for my $field (@$row) {
+        $field =~ s/"(.*?)"\K,//g;   # ""で囲まれている中のカンマを削除
+    }
+    $csv->print($fh_out, $row);
+    print $fh_out "\n";
+}
+
+close $fh_in;
+close $fh_out;
