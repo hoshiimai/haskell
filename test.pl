@@ -81,3 +81,7 @@ while (my $row = $csv->getline($fh_in)) {
 
 close $fh_in;
 close $fh_out;
+
+
+
+$line =~ s/"([^"]*)",([^"]*)/"$1", "$2"/g;
